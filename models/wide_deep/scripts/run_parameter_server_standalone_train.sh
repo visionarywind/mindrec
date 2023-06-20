@@ -73,8 +73,8 @@ done
 
 # Start Worker
 export MS_ROLE=MS_WORKER
-rm -rf ${execute_path}/worker/
-mkdir ${execute_path}/worker/
+# rm -rf ${execute_path}/worker/
+mkdir -p ${execute_path}/worker/ckpt
 cd ${execute_path}/worker/ || exit
 python -s ${self_path}/../train_and_eval_parameter_server_standalone.py --device_target=$DEVICE_TARGET  \
        --epochs=$EPOCHS --data_path=$DATASET --parameter_server=1                                   \

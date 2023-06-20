@@ -19,6 +19,7 @@ import os
 import sys
 from mindspore import Model, context
 from mindspore.train.callback import ModelCheckpoint, CheckpointConfig, TimeMonitor
+from mindspore.train.serialization import load_checkpoint
 from mindspore.common import set_seed
 
 from mindspore.communication.management import init
@@ -97,8 +98,14 @@ def train_and_eval(config):
     auc_metric = AUCMetric()
     # load check point
     ckpt_path = config.ckpt_path
-    param_dict = load_checkpoint(ckpt_path)
-    load_param_into_net(train_net, param_dict)
+    #param_dict = load_checkpoint(ckpt_path)
+    #load_param_into_net(train_net, param_dict)
+    file_list = os.listdir(os.getcwd() + ckpt_path)
+    for f in file_list:
+        print("traverse ckpt dir : {}".format(f))
+        if f.endswith(".ckpt"):
+            param_dict = load_checkpoint(ckpt_path)
+            load_param_into_net(train_net, param_dict)
 
     model = Model(train_net, eval_network=eval_net, metrics={"auc": auc_metric})
 
