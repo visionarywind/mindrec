@@ -95,6 +95,10 @@ def train_and_eval(config):
     train_net, eval_net = net_builder.get_net(config)
     train_net.set_train()
     auc_metric = AUCMetric()
+    # load check point
+    ckpt_path = config.ckpt_path
+    param_dict = load_checkpoint(ckpt_path)
+    load_param_into_net(train_net, param_dict)
 
     model = Model(train_net, eval_network=eval_net, metrics={"auc": auc_metric})
 
